@@ -1,49 +1,63 @@
-import {
-  useFormik,
-} from 'formik';
+import axios from 'axios';
+import { useFormik } from 'formik';
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { Button, Form } from 'react-bootstrap';
 
 const SignupForm = () => {
+  const [authFailed, setAuthFailed] = useState(false);
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
     },
     onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+      axios.post('/api/v1/login', values)
+      .then((response) => {
+        setAuthFailed(false);
+        localStorage.setItem('userId', JSON.stringify(response.data));
+        navigate('/');
+      }).catch(() => {
+        setAuthFailed(true);
+      });
     },
   });
+  
   return (
-    <form className='col-12 mt-3 mt-mb-0' onSubmit={formik.handleSubmit}>
+    <Form className='col-12 mt-3 mt-mb-0' onSubmit={formik.handleSubmit}>
       <h1 className="text-center mb-4">Войти</h1>
-      <div className='form-floating mb-3'>
-        <input
+      <Form.Group className='form-floating mb-3'>
+      <Form.Control
           name="username"
           autoComplete="username"
           required
           placeholder="Ваш ник"
           id="username"
-          className="form-control"
           onChange={formik.handleChange}
           value={formik.values.email}
+          isInvalid={authFailed}
         />
-        <label htmlFor="username">Ваш ник</label>
-      </div>
-      <div className='form-floating mb-4'>
-        <input
+        <Form.Label htmlFor="username">Ваш ник</Form.Label>
+      </Form.Group>
+      <Form.Group className='form-floating mb-4'>
+        <Form.Control
           name="password"
           autoComplete="current-password"
           required
           placeholder="Пароль"
           type='password'
           id='password'
-          className='form-control'
           onChange={formik.handleChange}
           value={formik.values.password}
+          isInvalid={authFailed}
         />
-        <label className="form-label" htmlFor="password">Пароль</label>
-      </div>
-      <button type="submit" className="w-100 mb-3 btn btn-outline-primary">Войти</button>
-    </form>
+        <Form.Control.Feedback type="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
+        <Form.Label htmlFor="password">Пароль</Form.Label>
+      </Form.Group>
+      <Button type="submit" className="w-100 mb-3">Войти</Button>
+    </Form>
   );
 };
 
