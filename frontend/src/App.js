@@ -8,7 +8,7 @@ import { useState } from 'react';
 import ChatPage from './components/ChatPage';
 import LoginPage from './components/LoginPage';
 import Page404 from './components/Page404';
-import UserContext from './components/UserContext';
+import UserContext from './slices/UserContext';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);

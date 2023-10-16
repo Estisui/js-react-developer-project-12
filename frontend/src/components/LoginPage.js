@@ -64,7 +64,7 @@ const SignupForm = () => {
 const LoginPage = () => {
   return(
     <div className="login d-flex flex-column h-100 text-light">
-      <nav className="shadow-sm navbar navbar-expand-lg navbar-light">
+      <nav className="navbar navbar-expand-lg navbar-light border-bottom">
         <div className="container">
           <a className="navbar-brand text-light" href="/">Chat</a>
         </div>
