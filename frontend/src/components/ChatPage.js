@@ -7,6 +7,15 @@ import { setChannels } from "../slices/channelsSlice";
 import { setMessages } from "../slices/messagesSlice";
 import cn from "classnames";
 
+const declOfNum = (number, titles) => {
+  const cases = [2, 0, 1, 1, 1, 2];
+  return titles[
+    number % 100 > 4 && number % 100 < 20
+      ? 2
+      : cases[number % 10 < 5 ? number % 10 : 5]
+  ];
+};
+
 const ChatPage = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -97,9 +106,31 @@ const ChatPage = () => {
             <div className="d-flex flex-column h-100">
               <div className="mb-4 p-3 small border-bottom">
                 <p className="m-0">
-                  <b># {}</b>
+                  <b>
+                    #{" "}
+                    {channelsInfo.currentChannelId
+                      ? channelsInfo.channels.find(
+                          (channel) =>
+                            channel.id === channelsInfo.currentChannelId
+                        ).name
+                      : ""}
+                  </b>
                 </p>
-                <span className="text-muted">{}</span>
+                <span className="text-muted">
+                  {
+                    messagesInfo.messages.filter(
+                      (message) =>
+                        message.channelId === channelsInfo.currentChannelId
+                    ).length
+                  }{" "}
+                  {declOfNum(
+                    messagesInfo.messages.filter(
+                      (message) =>
+                        message.channelId === channelsInfo.currentChannelId
+                    ).length,
+                    ["сообщение", "сообщения", "сообщений"]
+                  )}
+                </span>
               </div>
               <div
                 id="messages-box"
