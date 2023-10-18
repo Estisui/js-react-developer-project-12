@@ -3,9 +3,12 @@ import UserContext from "../slices/UserContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { setChannels } from "../slices/channelsSlice";
-import { setMessages } from "../slices/messagesSlice";
+import { setChannels, setCurrentChannelId } from "../slices/channelsSlice";
+import { addMessage, setMessages } from "../slices/messagesSlice";
 import cn from "classnames";
+import { socket } from "../socket";
+import { Button, Form } from "react-bootstrap";
+import { useFormik } from "formik";
 
 const declOfNum = (number, titles) => {
   const cases = [2, 0, 1, 1, 1, 2];
@@ -22,6 +25,12 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   const channelsInfo = useSelector((state) => state.channelsInfo);
   const messagesInfo = useSelector((state) => state.messagesInfo);
+
+  useEffect(() => {
+    socket.on("newMessage", (payload) => {
+      dispatch(addMessage(payload));
+    });
+  }, [dispatch]);
 
   useEffect(() => {
     const userId = JSON.parse(localStorage.getItem("userId"));
@@ -43,10 +52,66 @@ const ChatPage = () => {
         .then((response) => {
           dispatch(setChannels(response.data));
           dispatch(setMessages(response.data));
+          socket.connect();
         })
         .catch(() => {});
     }
   }, [currentUser, dispatch]);
+
+  const MessageForm = () => {
+    const formik = useFormik({
+      initialValues: {
+        message: "",
+      },
+      onSubmit: (values) => {
+        socket.emit("newMessage", {
+          body: values.message,
+          channelId: channelsInfo.currentChannelId,
+          username: currentUser.username,
+        });
+      },
+    });
+
+    return (
+      <Form
+        novalidate=""
+        className="py-1 border rounded-2"
+        onSubmit={formik.handleSubmit}
+      >
+        <Form.Group className="input-group has-validation">
+          <Form.Control
+            name="message"
+            id="message"
+            aria-label="Новое сообщение"
+            placeholder="Введите сообщение..."
+            className="border-0 p-0 ps-2"
+            value={formik.values.message}
+            onChange={formik.handleChange}
+          />
+          <Button
+            type="submit"
+            className="btn-group-vertical border-0 focus-ring"
+            variant=""
+            disabled={!formik.values.message}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              width="20"
+              height="20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
+              ></path>
+            </svg>
+            <span className="visually-hidden">Отправить</span>
+          </Button>
+        </Form.Group>
+      </Form>
+    );
+  };
 
   return (
     <div className="d-flex flex-column h-100">
@@ -90,6 +155,11 @@ const ChatPage = () => {
                 <li key={channel.id} className="nav-item w-100">
                   <button
                     type="button"
+                    onClick={() =>
+                      dispatch(
+                        setCurrentChannelId({ currentChannelId: channel.id })
+                      )
+                    }
                     className={cn("w-100 rounded-0 text-start btn", {
                       "btn-outline-secondary":
                         channel.id === channelsInfo.currentChannelId,
@@ -138,42 +208,12 @@ const ChatPage = () => {
               >
                 {messagesInfo.messages.map((message) => (
                   <div key={message.id} className="text-break mb-2">
-                    <b>{message.username}</b>
-                    ": "{message.body}
+                    <b>{message.username}</b>: {message.body}
                   </div>
                 ))}
               </div>
               <div className="mt-auto px-5 py-3">
-                <form novalidate="" className="py-1 border rounded-2">
-                  <div className="input-group has-validation">
-                    <input
-                      name="body"
-                      aria-label="Новое сообщение"
-                      placeholder="Введите сообщение..."
-                      className="border-0 p-0 ps-2 form-control"
-                      value=""
-                    />
-                    <button
-                      type="submit"
-                      className="btn btn-group-vertical"
-                      disabled=""
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        width="20"
-                        height="20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
-                        ></path>
-                      </svg>
-                      <span className="visually-hidden">Отправить</span>
-                    </button>
-                  </div>
-                </form>
+                <MessageForm />
               </div>
             </div>
           </div>
