@@ -16,6 +16,7 @@ import { useFormik } from "formik";
 import getModal from "../modals";
 import { openModal } from "../slices/modalSlice";
 import ChannelButton from "./channelButton";
+import Header from "./Header";
 
 const declOfNum = (number, titles) => {
   const cases = [2, 0, 1, 1, 1, 2];
@@ -27,7 +28,7 @@ const declOfNum = (number, titles) => {
 };
 
 const ChatPage = () => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const channelsInfo = useSelector((state) => state.channelsInfo);
@@ -50,13 +51,10 @@ const ChatPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const userId = JSON.parse(localStorage.getItem("userId"));
-    if (userId) {
-      setCurrentUser(userId);
-    } else {
+    if (!currentUser) {
       navigate("/login");
     }
-  }, [navigate, setCurrentUser]);
+  }, [currentUser, navigate]);
 
   useEffect(() => {
     if (currentUser) {
@@ -108,6 +106,7 @@ const ChatPage = () => {
           <Form.Control
             name="message"
             id="message"
+            autoFocus
             aria-label="Новое сообщение"
             placeholder="Введите сообщение..."
             className="border-0 p-0 ps-2"
@@ -139,18 +138,13 @@ const ChatPage = () => {
     );
   };
 
+  if (!currentUser) {
+    return null;
+  }
+
   return (
     <div className="d-flex flex-column h-100">
-      <nav className="navbar navbar-expand-lg navbar-light border-bottom">
-        <div className="container">
-          <a className="navbar-brand text-light" href="/">
-            Chat
-          </a>
-          <button type="button" className="btn btn-primary">
-            Выйти
-          </button>
-        </div>
-      </nav>
+      <Header />
       <div className="container h-100 my-4 overflow-hidden rounded border border-light">
         <div className="row h-100 flex-md-row">
           <div className="col-4 col-md-2 border-end px-0 flex-column h-100 d-flex">
