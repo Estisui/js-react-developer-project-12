@@ -186,7 +186,7 @@ const ChatPage = () => {
                     {channelsInfo.currentChannelId
                       ? channelsInfo.channels.find(
                           (channel) =>
-                            channel.id === channelsInfo.currentChannelId
+                            channel.id === channelsInfo.currentChannelId,
                         ).name
                       : ""}
                   </b>
@@ -195,15 +195,15 @@ const ChatPage = () => {
                   {
                     messagesInfo.messages.filter(
                       (message) =>
-                        message.channelId === channelsInfo.currentChannelId
+                        message.channelId === channelsInfo.currentChannelId,
                     ).length
                   }{" "}
                   {declOfNum(
                     messagesInfo.messages.filter(
                       (message) =>
-                        message.channelId === channelsInfo.currentChannelId
+                        message.channelId === channelsInfo.currentChannelId,
                     ).length,
-                    ["сообщение", "сообщения", "сообщений"]
+                    ["сообщение", "сообщения", "сообщений"],
                   )}
                 </span>
               </div>
@@ -214,7 +214,7 @@ const ChatPage = () => {
                 {messagesInfo.messages
                   .filter(
                     (message) =>
-                      message.channelId === channelsInfo.currentChannelId
+                      message.channelId === channelsInfo.currentChannelId,
                   )
                   .map((message) => (
                     <div key={message.id} className="text-break mb-2">

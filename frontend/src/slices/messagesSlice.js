@@ -19,7 +19,7 @@ const messagesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(removeChannel, (state, { payload }) => {
       state.messages = state.messages.filter(
-        (message) => message.channelId !== payload.id
+        (message) => message.channelId !== payload.id,
       );
     });
   },

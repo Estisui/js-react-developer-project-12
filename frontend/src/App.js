@@ -8,8 +8,10 @@ import UserContext from "./slices/UserContext";
 import SignUp from "./components/SignUp";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
-  
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || null,
+  );
+
   return (
     <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       <Router>
