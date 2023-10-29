@@ -3,12 +3,19 @@ import UserContext from "../slices/UserContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { setChannels, setCurrentChannelId } from "../slices/channelsSlice";
+import {
+  addChannel,
+  setChannels,
+  removeChannel,
+  renameChannel,
+} from "../slices/channelsSlice";
 import { addMessage, setMessages } from "../slices/messagesSlice";
-import cn from "classnames";
 import { socket } from "../socket";
 import { Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
+import getModal from "../modals";
+import { openModal } from "../slices/modalSlice";
+import ChannelButton from "./channelButton";
 
 const declOfNum = (number, titles) => {
   const cases = [2, 0, 1, 1, 1, 2];
@@ -25,10 +32,20 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   const channelsInfo = useSelector((state) => state.channelsInfo);
   const messagesInfo = useSelector((state) => state.messagesInfo);
+  const modal = useSelector((state) => state.modal);
 
   useEffect(() => {
     socket.on("newMessage", (payload) => {
       dispatch(addMessage(payload));
+    });
+    socket.on("newChannel", (payload) => {
+      dispatch(addChannel(payload));
+    });
+    socket.on("removeChannel", (payload) => {
+      dispatch(removeChannel(payload));
+    });
+    socket.on("renameChannel", (payload) => {
+      dispatch(renameChannel(payload));
     });
   }, [dispatch]);
 
@@ -57,6 +74,15 @@ const ChatPage = () => {
         .catch(() => {});
     }
   }, [currentUser, dispatch]);
+
+  const renderModal = ({ isOpened, type, id }) => {
+    if (!isOpened) {
+      return null;
+    }
+
+    const Component = getModal(type);
+    return <Component id={id} />;
+  };
 
   const MessageForm = () => {
     const formik = useFormik({
@@ -133,6 +159,7 @@ const ChatPage = () => {
               <button
                 type="button"
                 class="p-0 text-primary btn btn-group-vertical"
+                onClick={() => dispatch(openModal({ type: "adding" }))}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -152,23 +179,7 @@ const ChatPage = () => {
               className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
             >
               {channelsInfo.channels.map((channel) => (
-                <li key={channel.id} className="nav-item w-100">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      dispatch(
-                        setCurrentChannelId({ currentChannelId: channel.id })
-                      )
-                    }
-                    className={cn("w-100 rounded-0 text-start btn", {
-                      "btn-outline-secondary":
-                        channel.id === channelsInfo.currentChannelId,
-                    })}
-                  >
-                    <span className="me-1">#</span>
-                    {channel.name}
-                  </button>
-                </li>
+                <ChannelButton channel={channel} />
               ))}
             </ul>
           </div>
@@ -206,11 +217,16 @@ const ChatPage = () => {
                 id="messages-box"
                 className="chat-messages overflow-auto px-5"
               >
-                {messagesInfo.messages.map((message) => (
-                  <div key={message.id} className="text-break mb-2">
-                    <b>{message.username}</b>: {message.body}
-                  </div>
-                ))}
+                {messagesInfo.messages
+                  .filter(
+                    (message) =>
+                      message.channelId === channelsInfo.currentChannelId
+                  )
+                  .map((message) => (
+                    <div key={message.id} className="text-break mb-2">
+                      <b>{message.username}</b>: {message.body}
+                    </div>
+                  ))}
               </div>
               <div className="mt-auto px-5 py-3">
                 <MessageForm />
@@ -219,6 +235,7 @@ const ChatPage = () => {
           </div>
         </div>
       </div>
+      {renderModal(modal)}
     </div>
   );
 };
