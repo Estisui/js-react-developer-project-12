@@ -27,7 +27,7 @@ const Add = () => {
     return errors;
   };
 
-  const f = useFormik({
+  const formik = useFormik({
     initialValues: { name: "" },
     validate,
     validateOnChange: false,
@@ -45,23 +45,22 @@ const Add = () => {
       <Modal.Header closeButton>
         <Modal.Title>Добавить канал</Modal.Title>
       </Modal.Header>
-
       <Modal.Body>
-        <Form onSubmit={f.handleSubmit}>
+        <Form onSubmit={formik.handleSubmit}>
           <FormGroup>
             <FormControl
               required
               autoFocus
-              onChange={f.handleChange}
-              onBlur={f.handleBlur}
-              value={f.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
               name="name"
               id="name"
               autoComplete="off"
-              isInvalid={f.errors.name}
+              isInvalid={formik.errors.name}
             />
             <Form.Control.Feedback type="invalid">
-              {f.errors.name}
+              {formik.errors.name}
             </Form.Control.Feedback>
           </FormGroup>
           <Stack direction="horizontal" className="mt-2" gap={2}>

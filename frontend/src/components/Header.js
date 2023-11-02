@@ -9,7 +9,14 @@ const LogOutButton = () => {
   }
 
   return (
-    <button type="button" className="btn btn-primary">
+    <button
+      type="button"
+      className="btn btn-primary"
+      onClick={() => {
+        setCurrentUser(null);
+        localStorage.removeItem("user");
+      }}
+    >
       Выйти
     </button>
   );

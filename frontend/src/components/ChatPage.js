@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import UserContext from "../slices/UserContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -34,6 +34,7 @@ const ChatPage = () => {
   const channelsInfo = useSelector((state) => state.channelsInfo);
   const messagesInfo = useSelector((state) => state.messagesInfo);
   const modal = useSelector((state) => state.modal);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   useEffect(() => {
     socket.on("newMessage", (payload) => {
@@ -65,13 +66,14 @@ const ChatPage = () => {
           },
         })
         .then((response) => {
+          setIsAuthorized(true);
           dispatch(setChannels(response.data));
           dispatch(setMessages(response.data));
           socket.connect();
         })
-        .catch(() => {});
+        .catch(() => navigate("/login"));
     }
-  }, [currentUser, dispatch]);
+  }, [currentUser, dispatch, navigate]);
 
   const renderModal = ({ isOpened, type, id }) => {
     if (!isOpened) {
@@ -138,7 +140,7 @@ const ChatPage = () => {
     );
   };
 
-  if (!currentUser) {
+  if (!isAuthorized) {
     return null;
   }
 

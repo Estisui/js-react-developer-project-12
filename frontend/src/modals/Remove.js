@@ -19,7 +19,6 @@ const Remove = (props) => {
       <Modal.Header closeButton>
         <Modal.Title>Удалить канал</Modal.Title>
       </Modal.Header>
-
       <Modal.Body>
         <p className="lead">Уверены?</p>
         <Stack direction="horizontal" className="mt-2" gap={2}>
