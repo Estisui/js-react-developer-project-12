@@ -11,8 +11,10 @@ import { useDispatch } from "react-redux";
 import { closeModal } from "../slices/modalSlice";
 import { socket } from "../socket";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const Add = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const hideModal = () => dispatch(closeModal());
   const channelsInfo = useSelector((state) => state.channelsInfo);
@@ -22,7 +24,7 @@ const Add = () => {
     if (
       !channelsInfo.channels.every((channel) => channel.name !== values.name)
     ) {
-      errors.name = "Должно быть уникальным";
+      errors.name = t("modal.mustBeUnique");
     }
     return errors;
   };
@@ -43,7 +45,7 @@ const Add = () => {
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t("modal.addChannel")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -69,10 +71,10 @@ const Add = () => {
               variant="secondary ms-auto"
               onClick={hideModal}
             >
-              Отменить
+              {t("modal.cancel")}
             </Button>
             <Button type="submit" variant="primary">
-              Отправить
+              {t("modal.send")}
             </Button>
           </Stack>
         </Form>

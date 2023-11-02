@@ -11,9 +11,11 @@ import { useDispatch } from "react-redux";
 import { closeModal } from "../slices/modalSlice";
 import { socket } from "../socket";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const Rename = (props) => {
   const { id } = props;
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const hideModal = () => dispatch(closeModal());
   const channelsInfo = useSelector((state) => state.channelsInfo);
@@ -23,7 +25,7 @@ const Rename = (props) => {
     if (
       !channelsInfo.channels.every((channel) => channel.name !== values.name)
     ) {
-      errors.name = "Должно быть уникальным";
+      errors.name = t("modal.mustBeUnique");
     }
     return errors;
   };
@@ -47,7 +49,7 @@ const Rename = (props) => {
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t("modal.renameChannel")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -73,10 +75,10 @@ const Rename = (props) => {
               variant="secondary ms-auto"
               onClick={hideModal}
             >
-              Отменить
+              {t("modal.cancel")}
             </Button>
             <Button type="submit" variant="primary">
-              Отправить
+              {t("modal.send")}
             </Button>
           </Stack>
         </Form>

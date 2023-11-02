@@ -6,22 +6,24 @@ import axios from "axios";
 import { Button, Form } from "react-bootstrap";
 import * as Yup from "yup";
 import UserContext from "../slices/UserContext";
+import { useTranslation } from "react-i18next";
 
 const SignUpForm = () => {
+  const { t } = useTranslation();
   const { setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
-      .min(3, "От 3 символов")
-      .max(20, "До 20 символов")
-      .required("Обязательное поле"),
+      .min(3, t("signUp.min", { count: 3 }))
+      .max(20, t("signUp.max", { count: 20 }))
+      .required(t("signUp.required")),
     password: Yup.string()
-      .min(6, "От 6 символов")
-      .required("Обязательное поле"),
+      .min(6, t("signUp.min", { count: 6 }))
+      .required(t("signUp.required")),
     confirmPassword: Yup.string()
-      .required("Обязательное поле")
-      .oneOf([Yup.ref("password")], "Пароли не совпадают"),
+      .required(t("signUp.required"))
+      .oneOf([Yup.ref("password")], t("signUp.wrong")),
   });
 
   const formik = useFormik({
@@ -42,27 +44,25 @@ const SignUpForm = () => {
           setCurrentUser(data);
           navigate("/");
         })
-        .catch(() =>
-          setFieldError("username", "Такой пользователь уже существует"),
-        );
+        .catch(() => setFieldError("username", t("signUp.userExists")));
     },
   });
 
   return (
     <Form className="col-12 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
-      <h1 className="text-center mb-4">Регистрация</h1>
+      <h1 className="text-center mb-4">{t("signUp.registration")}</h1>
       <Form.Group className="form-floating mb-3">
         <Form.Control
           name="username"
           autoComplete="username"
           required
-          placeholder="Имя пользователя"
+          placeholder={t("signUp.username")}
           id="username"
           onChange={formik.handleChange}
           value={formik.values.username}
           isInvalid={formik.errors.username}
         />
-        <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+        <Form.Label htmlFor="username">{t("signUp.username")}</Form.Label>
         <Form.Control.Feedback type="invalid">
           {formik.errors.username}
         </Form.Control.Feedback>
@@ -72,7 +72,7 @@ const SignUpForm = () => {
           name="password"
           autoComplete="new-password"
           required
-          placeholder="Пароль"
+          placeholder={t("signUp.password")}
           type="password"
           id="password"
           onChange={formik.handleChange}
@@ -82,14 +82,14 @@ const SignUpForm = () => {
         <Form.Control.Feedback type="invalid">
           {formik.errors.password}
         </Form.Control.Feedback>
-        <Form.Label htmlFor="password">Пароль</Form.Label>
+        <Form.Label htmlFor="password">{t("signUp.password")}</Form.Label>
       </Form.Group>
       <Form.Group className="form-floating mb-4">
         <Form.Control
           name="confirmPassword"
           autoComplete="new-password"
           required
-          placeholder="Подтвердите пароль"
+          placeholder={t("signUp.confirmPassword")}
           type="password"
           id="confirmPassword"
           onChange={formik.handleChange}
@@ -99,10 +99,12 @@ const SignUpForm = () => {
         <Form.Control.Feedback type="invalid">
           {formik.errors.confirmPassword}
         </Form.Control.Feedback>
-        <Form.Label htmlFor="password">Подтвердите пароль</Form.Label>
+        <Form.Label htmlFor="password">
+          {t("signUp.confirmPassword")}
+        </Form.Label>
       </Form.Group>
       <Button type="submit" className="w-100 mb-3">
-        Зарегистрироваться
+        {t("signUp.signUp")}
       </Button>
     </Form>
   );

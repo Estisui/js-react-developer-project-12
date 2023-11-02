@@ -4,11 +4,13 @@ import cn from "classnames";
 import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
 import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
 import { openModal } from "../slices/modalSlice";
+import { useTranslation } from "react-i18next";
 
 const ChannelButton = (props) => {
   const { channel } = props;
   const dispatch = useDispatch();
   const channelsInfo = useSelector((state) => state.channelsInfo);
+  const { t } = useTranslation();
 
   // non-removable case
 
@@ -64,14 +66,14 @@ const ChannelButton = (props) => {
               dispatch(openModal({ type: "removing", id: channel.id }))
             }
           >
-            Удалить
+            {t("dropdown.delete")}
           </Dropdown.Item>
           <Dropdown.Item
             onClick={() =>
               dispatch(openModal({ type: "renaming", id: channel.id }))
             }
           >
-            Переименовать
+            {t("dropdown.rename")}
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>

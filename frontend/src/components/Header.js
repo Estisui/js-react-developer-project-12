@@ -1,8 +1,10 @@
 import { useContext } from "react";
 import UserContext from "../slices/UserContext";
+import { useTranslation } from "react-i18next";
 
 const LogOutButton = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { t } = useTranslation();
 
   if (!currentUser) {
     return null;
@@ -17,17 +19,19 @@ const LogOutButton = () => {
         localStorage.removeItem("user");
       }}
     >
-      Выйти
+      {t("header.exit")}
     </button>
   );
 };
 
 const Header = () => {
+  const { t } = useTranslation();
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light border-bottom">
       <div className="container">
         <a className="navbar-brand text-light" href="/">
-          Hexlet Chat
+          {t("header.logo")}
         </a>
         <LogOutButton />
       </div>
