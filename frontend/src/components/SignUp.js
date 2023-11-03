@@ -7,6 +7,7 @@ import { Button, Form } from "react-bootstrap";
 import * as Yup from "yup";
 import UserContext from "../slices/UserContext";
 import { useTranslation } from "react-i18next";
+import { ToastContainer, toast } from "react-toastify";
 
 const SignUpForm = () => {
   const { t } = useTranslation();
@@ -44,7 +45,13 @@ const SignUpForm = () => {
           setCurrentUser(data);
           navigate("/");
         })
-        .catch(() => setFieldError("username", t("signUp.userExists")));
+        .catch((e) => {
+          if (e.code === "ERR_NETWORK") {
+            toast.error(t("error.connection"), { theme: "dark" });
+          } else {
+            setFieldError("username", t("signUp.userExists"));
+          }
+        });
     },
   });
 
@@ -125,6 +132,7 @@ const SignUp = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

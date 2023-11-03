@@ -18,6 +18,7 @@ import { openModal } from "../slices/modalSlice";
 import ChannelButton from "./channelButton";
 import Header from "./Header";
 import { useTranslation } from "react-i18next";
+import { ToastContainer, toast } from "react-toastify";
 
 const ChatPage = () => {
   const { currentUser } = useContext(UserContext);
@@ -35,16 +36,19 @@ const ChatPage = () => {
     });
     socket.on("newChannel", (payload) => {
       dispatch(addChannel(payload));
+      toast.success(t("success.add"), { theme: "dark" });
     });
     socket.on("removeChannel", (payload) => {
       dispatch(removeChannel(payload));
+      toast.success(t("success.remove"), { theme: "dark" });
     });
     socket.on("renameChannel", (payload) => {
       dispatch(renameChannel(payload));
+      toast.success(t("success.rename"), { theme: "dark" });
     });
 
     return () => socket.removeAllListeners();
-  }, [dispatch]);
+  }, [dispatch, t]);
 
   useEffect(() => {
     if (!currentUser) {
@@ -66,11 +70,17 @@ const ChatPage = () => {
           dispatch(setMessages(response.data));
           socket.connect();
         })
-        .catch(() => navigate("/login"));
+        .catch((e) => {
+          if (e.code === "ERR_NETWORK") {
+            toast.error(t("error.connection"), { theme: "dark" });
+          } else {
+            navigate("/login");
+          }
+        });
     }
 
     return () => socket.disconnect();
-  }, [currentUser, dispatch, navigate]);
+  }, [currentUser, dispatch, navigate, t]);
 
   const renderModal = ({ isOpened, type, id }) => {
     if (!isOpened) {
@@ -138,7 +148,12 @@ const ChatPage = () => {
   };
 
   if (!isAuthorized) {
-    return null;
+    return (
+      <div className="d-flex flex-column h-100">
+        <Header />
+        <ToastContainer />
+      </div>
+    );
   }
 
   return (
@@ -228,6 +243,7 @@ const ChatPage = () => {
         </div>
       </div>
       {renderModal(modal)}
+      <ToastContainer />
     </div>
   );
 };

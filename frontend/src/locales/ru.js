@@ -52,6 +52,14 @@ const ru = {
       delete: "Удалить",
       renameChannel: "Переименовать канал",
     },
+    error: {
+      connection: "Ошибка соединения",
+    },
+    success: {
+      add: "Канал создан",
+      remove: "Канал удален",
+      rename: "Канал переименован",
+    },
   },
 };
 

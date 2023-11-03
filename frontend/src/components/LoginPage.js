@@ -6,6 +6,7 @@ import { Button, Form } from "react-bootstrap";
 import Header from "./Header";
 import UserContext from "../slices/UserContext";
 import { useTranslation } from "react-i18next";
+import { ToastContainer, toast } from "react-toastify";
 
 const LoginForm = () => {
   const { setCurrentUser } = useContext(UserContext);
@@ -28,8 +29,12 @@ const LoginForm = () => {
           setCurrentUser(data);
           navigate("/");
         })
-        .catch(() => {
-          setAuthFailed(true);
+        .catch((e) => {
+          if (e.code === "ERR_NETWORK") {
+            toast.error(t("error.connection"), { theme: "dark" });
+          } else {
+            setAuthFailed(true);
+          }
         });
     },
   });
@@ -97,6 +102,7 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
