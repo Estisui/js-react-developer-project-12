@@ -15,7 +15,7 @@ import { Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
 import getModal from "../modals";
 import { openModal } from "../slices/modalSlice";
-import ChannelButton from "./channelButton";
+import ChannelButton from "./ChannelButton";
 import Header from "./Header";
 import { useTranslation } from "react-i18next";
 import { ToastContainer, toast } from "react-toastify";
