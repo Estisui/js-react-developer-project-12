@@ -19,6 +19,7 @@ import ChannelButton from "./channelButton";
 import Header from "./Header";
 import { useTranslation } from "react-i18next";
 import { ToastContainer, toast } from "react-toastify";
+import filter from "leo-profanity";
 
 const ChatPage = () => {
   const { currentUser } = useContext(UserContext);
@@ -29,6 +30,7 @@ const ChatPage = () => {
   const modal = useSelector((state) => state.modal);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const { t } = useTranslation();
+  filter.loadDictionary("ru");
 
   useEffect(() => {
     socket.on("newMessage", (payload) => {
@@ -231,7 +233,7 @@ const ChatPage = () => {
                   )
                   .map((message) => (
                     <div key={message.id} className="text-break mb-2">
-                      <b>{message.username}</b>: {message.body}
+                      <b>{message.username}</b>: {filter.clean(message.body)}
                     </div>
                   ))}
               </div>
