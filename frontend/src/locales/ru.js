@@ -5,6 +5,7 @@ const ru = {
       exit: "Выйти",
     },
     dropdown: {
+      label: "Управление каналом",
       delete: "Удалить",
       rename: "Переименовать",
     },

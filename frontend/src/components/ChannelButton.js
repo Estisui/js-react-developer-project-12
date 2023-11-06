@@ -58,7 +58,9 @@ const ChannelButton = (props) => {
           variant={cn({
             "outline-secondary": channel.id === channelsInfo.currentChannelId,
           })}
-        />
+        >
+          <span className="visually-hidden">{t("dropdown.label")}</span>
+        </DropdownToggle>
 
         <Dropdown.Menu>
           <Dropdown.Item
