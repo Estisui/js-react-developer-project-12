@@ -61,6 +61,9 @@ const Add = () => {
               autoComplete="off"
               isInvalid={formik.errors.name}
             />
+            <Form.Label className="visually-hidden" htmlFor="name">
+              {t("modal.name")}
+            </Form.Label>
             <Form.Control.Feedback type="invalid">
               {formik.errors.name}
             </Form.Control.Feedback>

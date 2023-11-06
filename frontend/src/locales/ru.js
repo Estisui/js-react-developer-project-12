@@ -39,6 +39,7 @@ const ru = {
       signUp: "Зарегистрироваться",
     },
     modal: {
+      name: "Имя канала",
       mustBeUnique: "Должно быть уникальным",
       addChannel: "Добавить канал",
       cancel: "Отменить",
