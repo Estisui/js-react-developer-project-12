@@ -16,11 +16,11 @@ const SignUpForm = () => {
 
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
-      .min(3, t("signUp.min", { count: 3 }))
-      .max(20, t("signUp.max", { count: 20 }))
+      .min(3, t("signUp.usernameLength"))
+      .max(20, t("signUp.usernameLength"))
       .required(t("signUp.required")),
     password: Yup.string()
-      .min(6, t("signUp.min", { count: 6 }))
+      .min(6, t("signUp.passwordLength"))
       .required(t("signUp.required")),
     confirmPassword: Yup.string()
       .required(t("signUp.required"))
