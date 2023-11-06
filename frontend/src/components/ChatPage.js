@@ -21,6 +21,66 @@ import { openModal } from '../slices/modalSlice';
 import ChannelButton from './ChannelButton';
 import Header from './Header';
 
+const MessageForm = () => {
+  const { currentUser } = useContext(UserContext);
+  const channelsInfo = useSelector((state) => state.channelsInfo);
+  const { t } = useTranslation();
+
+  const formik = useFormik({
+    initialValues: {
+      message: '',
+    },
+    onSubmit: (values) => {
+      socket.emit('newMessage', {
+        body: values.message,
+        channelId: channelsInfo.currentChannelId,
+        username: currentUser.username,
+      });
+    },
+  });
+
+  return (
+    <Form
+      novalidate=""
+      className="py-1 border rounded-2"
+      onSubmit={formik.handleSubmit}
+    >
+      <Form.Group className="input-group has-validation">
+        <Form.Control
+          name="message"
+          id="message"
+          autoFocus
+          aria-label={t('messages.new')}
+          placeholder={t('messages.enter')}
+          className="border-0 p-0 ps-2"
+          value={formik.values.message}
+          onChange={formik.handleChange}
+        />
+        <Button
+          type="submit"
+          className="btn-group-vertical border-0 focus-ring"
+          variant=""
+          disabled={!formik.values.message}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            width="20"
+            height="20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
+            />
+          </svg>
+          <span className="visually-hidden">{t('send')}</span>
+        </Button>
+      </Form.Group>
+    </Form>
+  );
+};
+
 const ChatPage = () => {
   const { currentUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -92,62 +152,6 @@ const ChatPage = () => {
     return <Component id={id} />;
   };
 
-  const MessageForm = () => {
-    const formik = useFormik({
-      initialValues: {
-        message: '',
-      },
-      onSubmit: (values) => {
-        socket.emit('newMessage', {
-          body: values.message,
-          channelId: channelsInfo.currentChannelId,
-          username: currentUser.username,
-        });
-      },
-    });
-
-    return (
-      <Form
-        novalidate=""
-        className="py-1 border rounded-2"
-        onSubmit={formik.handleSubmit}
-      >
-        <Form.Group className="input-group has-validation">
-          <Form.Control
-            name="message"
-            id="message"
-            autoFocus
-            aria-label={t('messages.new')}
-            placeholder={t('messages.enter')}
-            className="border-0 p-0 ps-2"
-            value={formik.values.message}
-            onChange={formik.handleChange}
-          />
-          <Button
-            type="submit"
-            className="btn-group-vertical border-0 focus-ring"
-            variant=""
-            disabled={!formik.values.message}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              width="20"
-              height="20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
-              />
-            </svg>
-            <span className="visually-hidden">{t('send')}</span>
-          </Button>
-        </Form.Group>
-      </Form>
-    );
-  };
-
   if (!isAuthorized) {
     return (
       <div className="d-flex flex-column h-100">
@@ -188,7 +192,7 @@ const ChatPage = () => {
               className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
             >
               {channelsInfo.channels.map((channel) => (
-                <ChannelButton channel={channel} />
+                <ChannelButton key={channel.id} channel={channel} />
               ))}
             </ul>
           </div>

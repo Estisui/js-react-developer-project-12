@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import ChatPage from './components/ChatPage';
 import LoginPage from './components/LoginPage';
 import Page404 from './components/Page404';
@@ -13,7 +13,9 @@ const App = () => {
   );
 
   return (
-    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+    <UserContext.Provider
+      value={useMemo(() => ({ currentUser, setCurrentUser }), [currentUser, setCurrentUser])}
+    >
       <Router>
         <Routes>
           <Route path="/" element={<ChatPage />} />
