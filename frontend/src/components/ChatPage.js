@@ -30,7 +30,6 @@ const ChatPage = () => {
   const modal = useSelector((state) => state.modal);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const { t } = useTranslation();
-  filter.loadDictionary("ru");
 
   useEffect(() => {
     socket.on("newMessage", (payload) => {
