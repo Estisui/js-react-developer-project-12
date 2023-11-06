@@ -1,7 +1,7 @@
-import { useContext } from "react";
-import UserContext from "../slices/UserContext";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useContext } from 'react';
+import UserContext from '../slices/UserContext';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 const LogOutButton = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -17,10 +17,10 @@ const LogOutButton = () => {
       className="btn btn-primary"
       onClick={() => {
         setCurrentUser(null);
-        localStorage.removeItem("user");
+        localStorage.removeItem('user');
       }}
     >
-      {t("header.exit")}
+      {t('header.exit')}
     </button>
   );
 };
@@ -37,10 +37,10 @@ const Header = () => {
           href="/"
           onClick={(e) => {
             e.preventDefault();
-            navigate("/");
+            navigate('/');
           }}
         >
-          {t("header.logo")}
+          {t('header.logo')}
         </a>
         <LogOutButton />
       </div>

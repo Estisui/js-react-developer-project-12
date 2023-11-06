@@ -1,25 +1,25 @@
-import { useEffect, useContext, useState } from "react";
-import UserContext from "../slices/UserContext";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useContext, useState } from 'react';
+import UserContext from '../slices/UserContext';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   addChannel,
   setChannels,
   removeChannel,
   renameChannel,
-} from "../slices/channelsSlice";
-import { addMessage, setMessages } from "../slices/messagesSlice";
-import { socket } from "../socket";
-import { Button, Form } from "react-bootstrap";
-import { useFormik } from "formik";
-import getModal from "../modals";
-import { openModal } from "../slices/modalSlice";
-import ChannelButton from "./ChannelButton";
-import Header from "./Header";
-import { useTranslation } from "react-i18next";
-import { ToastContainer, toast } from "react-toastify";
-import filter from "leo-profanity";
+} from '../slices/channelsSlice';
+import { addMessage, setMessages } from '../slices/messagesSlice';
+import { socket } from '../socket';
+import { Button, Form } from 'react-bootstrap';
+import { useFormik } from 'formik';
+import getModal from '../modals';
+import { openModal } from '../slices/modalSlice';
+import ChannelButton from './ChannelButton';
+import Header from './Header';
+import { useTranslation } from 'react-i18next';
+import { ToastContainer, toast } from 'react-toastify';
+import filter from 'leo-profanity';
 
 const ChatPage = () => {
   const { currentUser } = useContext(UserContext);
@@ -32,20 +32,20 @@ const ChatPage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    socket.on("newMessage", (payload) => {
+    socket.on('newMessage', (payload) => {
       dispatch(addMessage(payload));
     });
-    socket.on("newChannel", (payload) => {
+    socket.on('newChannel', (payload) => {
       dispatch(addChannel(payload));
-      toast.success(t("success.add"), { theme: "dark" });
+      toast.success(t('success.add'), { theme: 'dark' });
     });
-    socket.on("removeChannel", (payload) => {
+    socket.on('removeChannel', (payload) => {
       dispatch(removeChannel(payload));
-      toast.success(t("success.remove"), { theme: "dark" });
+      toast.success(t('success.remove'), { theme: 'dark' });
     });
-    socket.on("renameChannel", (payload) => {
+    socket.on('renameChannel', (payload) => {
       dispatch(renameChannel(payload));
-      toast.success(t("success.rename"), { theme: "dark" });
+      toast.success(t('success.rename'), { theme: 'dark' });
     });
 
     return () => socket.removeAllListeners();
@@ -53,14 +53,14 @@ const ChatPage = () => {
 
   useEffect(() => {
     if (!currentUser) {
-      navigate("/login");
+      navigate('/login');
     }
   }, [currentUser, navigate]);
 
   useEffect(() => {
     if (currentUser) {
       axios
-        .get("/api/v1/data", {
+        .get('/api/v1/data', {
           headers: {
             Authorization: `Bearer ${currentUser.token}`,
           },
@@ -72,10 +72,10 @@ const ChatPage = () => {
           socket.connect();
         })
         .catch((e) => {
-          if (e.code === "ERR_NETWORK") {
-            toast.error(t("error.connection"), { theme: "dark" });
+          if (e.code === 'ERR_NETWORK') {
+            toast.error(t('error.connection'), { theme: 'dark' });
           } else {
-            navigate("/login");
+            navigate('/login');
           }
         });
     }
@@ -95,10 +95,10 @@ const ChatPage = () => {
   const MessageForm = () => {
     const formik = useFormik({
       initialValues: {
-        message: "",
+        message: '',
       },
       onSubmit: (values) => {
-        socket.emit("newMessage", {
+        socket.emit('newMessage', {
           body: values.message,
           channelId: channelsInfo.currentChannelId,
           username: currentUser.username,
@@ -117,8 +117,8 @@ const ChatPage = () => {
             name="message"
             id="message"
             autoFocus
-            aria-label={t("messages.new")}
-            placeholder={t("messages.enter")}
+            aria-label={t('messages.new')}
+            placeholder={t('messages.enter')}
             className="border-0 p-0 ps-2"
             value={formik.values.message}
             onChange={formik.handleChange}
@@ -141,7 +141,7 @@ const ChatPage = () => {
                 d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
               ></path>
             </svg>
-            <span className="visually-hidden">{t("send")}</span>
+            <span className="visually-hidden">{t('send')}</span>
           </Button>
         </Form.Group>
       </Form>
@@ -164,11 +164,11 @@ const ChatPage = () => {
         <div className="row h-100 flex-md-row">
           <div className="col-4 col-md-2 border-end px-0 flex-column h-100 d-flex">
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-              <b>{t("channels")}</b>
+              <b>{t('channels')}</b>
               <button
                 type="button"
                 class="p-0 text-primary btn btn-group-vertical"
-                onClick={() => dispatch(openModal({ type: "adding" }))}
+                onClick={() => dispatch(openModal({ type: 'adding' }))}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -197,13 +197,13 @@ const ChatPage = () => {
               <div className="mb-4 p-3 small border-bottom">
                 <p className="m-0">
                   <b>
-                    #{" "}
+                    #{' '}
                     {channelsInfo.currentChannelId
                       ? channelsInfo.channels.find(
                           (channel) =>
                             channel.id === channelsInfo.currentChannelId,
                         ).name
-                      : ""}
+                      : ''}
                   </b>
                 </p>
                 <span className="text-muted">
@@ -212,8 +212,8 @@ const ChatPage = () => {
                       (message) =>
                         message.channelId === channelsInfo.currentChannelId,
                     ).length
-                  }{" "}
-                  {t("messages.message", {
+                  }{' '}
+                  {t('messages.message', {
                     count: messagesInfo.messages.filter(
                       (message) =>
                         message.channelId === channelsInfo.currentChannelId,

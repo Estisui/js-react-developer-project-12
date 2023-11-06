@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   channels: [],
@@ -6,7 +6,7 @@ const initialState = {
 };
 
 const channelsSlice = createSlice({
-  name: "channelsInfo",
+  name: 'channelsInfo',
   initialState,
   reducers: {
     setChannels: (state, { payload }) => {

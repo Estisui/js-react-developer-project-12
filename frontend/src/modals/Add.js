@@ -1,4 +1,4 @@
-import { useFormik } from "formik";
+import { useFormik } from 'formik';
 import {
   Modal,
   FormGroup,
@@ -6,12 +6,12 @@ import {
   Form,
   Button,
   Stack,
-} from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { closeModal } from "../slices/modalSlice";
-import { socket } from "../socket";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+} from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '../slices/modalSlice';
+import { socket } from '../socket';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const Add = () => {
   const { t } = useTranslation();
@@ -24,18 +24,18 @@ const Add = () => {
     if (
       !channelsInfo.channels.every((channel) => channel.name !== values.name)
     ) {
-      errors.name = t("modal.mustBeUnique");
+      errors.name = t('modal.mustBeUnique');
     }
     return errors;
   };
 
   const formik = useFormik({
-    initialValues: { name: "" },
+    initialValues: { name: '' },
     validate,
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      socket.emit("newChannel", {
+      socket.emit('newChannel', {
         name: values.name,
       });
       hideModal();
@@ -45,7 +45,7 @@ const Add = () => {
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title>{t("modal.addChannel")}</Modal.Title>
+        <Modal.Title>{t('modal.addChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -62,7 +62,7 @@ const Add = () => {
               isInvalid={formik.errors.name}
             />
             <Form.Label className="visually-hidden" htmlFor="name">
-              {t("modal.name")}
+              {t('modal.name')}
             </Form.Label>
             <Form.Control.Feedback type="invalid">
               {formik.errors.name}
@@ -74,10 +74,10 @@ const Add = () => {
               variant="secondary ms-auto"
               onClick={hideModal}
             >
-              {t("modal.cancel")}
+              {t('modal.cancel')}
             </Button>
             <Button type="submit" variant="primary">
-              {t("modal.send")}
+              {t('modal.send')}
             </Button>
           </Stack>
         </Form>

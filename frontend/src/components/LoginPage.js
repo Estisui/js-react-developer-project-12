@@ -1,12 +1,12 @@
-import axios from "axios";
-import { useFormik } from "formik";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, Form } from "react-bootstrap";
-import Header from "./Header";
-import UserContext from "../slices/UserContext";
-import { useTranslation } from "react-i18next";
-import { ToastContainer, toast } from "react-toastify";
+import axios from 'axios';
+import { useFormik } from 'formik';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button, Form } from 'react-bootstrap';
+import Header from './Header';
+import UserContext from '../slices/UserContext';
+import { useTranslation } from 'react-i18next';
+import { ToastContainer, toast } from 'react-toastify';
 
 const LoginForm = () => {
   const { setCurrentUser } = useContext(UserContext);
@@ -16,22 +16,22 @@ const LoginForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
     onSubmit: (values) => {
       axios
-        .post("/api/v1/login", values)
+        .post('/api/v1/login', values)
         .then((response) => {
           const { data } = response;
           setAuthFailed(false);
-          localStorage.setItem("user", JSON.stringify(data));
+          localStorage.setItem('user', JSON.stringify(data));
           setCurrentUser(data);
-          navigate("/");
+          navigate('/');
         })
         .catch((e) => {
-          if (e.code === "ERR_NETWORK") {
-            toast.error(t("error.connection"), { theme: "dark" });
+          if (e.code === 'ERR_NETWORK') {
+            toast.error(t('error.connection'), { theme: 'dark' });
           } else {
             setAuthFailed(true);
           }
@@ -41,26 +41,26 @@ const LoginForm = () => {
 
   return (
     <Form className="col-12 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
-      <h1 className="text-center mb-4">{t("login.enter")}</h1>
+      <h1 className="text-center mb-4">{t('login.enter')}</h1>
       <Form.Group className="form-floating mb-3">
         <Form.Control
           name="username"
           autoComplete="username"
           required
-          placeholder={t("login.username")}
+          placeholder={t('login.username')}
           id="username"
           onChange={formik.handleChange}
           value={formik.values.username}
           isInvalid={authFailed}
         />
-        <Form.Label htmlFor="username">{t("login.username")}</Form.Label>
+        <Form.Label htmlFor="username">{t('login.username')}</Form.Label>
       </Form.Group>
       <Form.Group className="form-floating mb-4">
         <Form.Control
           name="password"
           autoComplete="current-password"
           required
-          placeholder={t("login.password")}
+          placeholder={t('login.password')}
           type="password"
           id="password"
           onChange={formik.handleChange}
@@ -68,12 +68,12 @@ const LoginForm = () => {
           isInvalid={authFailed}
         />
         <Form.Control.Feedback type="invalid">
-          {t("login.invalid")}
+          {t('login.invalid')}
         </Form.Control.Feedback>
-        <Form.Label htmlFor="password">{t("login.password")}</Form.Label>
+        <Form.Label htmlFor="password">{t('login.password')}</Form.Label>
       </Form.Group>
       <Button type="submit" className="w-100 mb-3">
-        {t("login.enter")}
+        {t('login.enter')}
       </Button>
     </Form>
   );
@@ -94,8 +94,8 @@ const LoginPage = () => {
               </div>
               <div className="card-footer p-4">
                 <div className="text-center">
-                  <span className="me-1">{t("login.noAccount")}</span>
-                  <a href="/signup">{t("login.signUp")}</a>
+                  <span className="me-1">{t('login.noAccount')}</span>
+                  <a href="/signup">{t('login.signUp')}</a>
                 </div>
               </div>
             </div>

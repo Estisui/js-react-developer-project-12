@@ -1,8 +1,8 @@
-import { Modal, Button, Stack } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { closeModal } from "../slices/modalSlice";
-import { socket } from "../socket";
-import { useTranslation } from "react-i18next";
+import { Modal, Button, Stack } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '../slices/modalSlice';
+import { socket } from '../socket';
+import { useTranslation } from 'react-i18next';
 
 const Remove = (props) => {
   const { id } = props;
@@ -10,7 +10,7 @@ const Remove = (props) => {
   const dispatch = useDispatch();
   const hideModal = () => dispatch(closeModal());
   const removeChannel = () => {
-    socket.emit("removeChannel", {
+    socket.emit('removeChannel', {
       id: id,
     });
     hideModal();
@@ -19,16 +19,16 @@ const Remove = (props) => {
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title>{t("modal.removeChannel")}</Modal.Title>
+        <Modal.Title>{t('modal.removeChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="lead">{t("modal.sure")}</p>
+        <p className="lead">{t('modal.sure')}</p>
         <Stack direction="horizontal" className="mt-2" gap={2}>
           <Button type="button" variant="secondary ms-auto" onClick={hideModal}>
-            {t("modal.cancel")}
+            {t('modal.cancel')}
           </Button>
           <Button type="button" variant="danger" onClick={removeChannel}>
-            {t("modal.delete")}
+            {t('modal.delete')}
           </Button>
         </Stack>
       </Modal.Body>

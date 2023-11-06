@@ -1,12 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { removeChannel } from "./channelsSlice";
+import { createSlice } from '@reduxjs/toolkit';
+import { removeChannel } from './channelsSlice';
 
 const initialState = {
   messages: [],
 };
 
 const messagesSlice = createSlice({
-  name: "messages",
+  name: 'messages',
   initialState,
   reducers: {
     setMessages: (state, { payload }) => {

@@ -1,15 +1,15 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
-import ChatPage from "./components/ChatPage";
-import LoginPage from "./components/LoginPage";
-import Page404 from "./components/Page404";
-import UserContext from "./slices/UserContext";
-import SignUp from "./components/SignUp";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
+import ChatPage from './components/ChatPage';
+import LoginPage from './components/LoginPage';
+import Page404 from './components/Page404';
+import UserContext from './slices/UserContext';
+import SignUp from './components/SignUp';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || null,
+    JSON.parse(localStorage.getItem('user')) || null,
   );
 
   return (

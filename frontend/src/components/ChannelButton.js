@@ -1,10 +1,10 @@
-import { useSelector, useDispatch } from "react-redux";
-import { setCurrentChannelId } from "../slices/channelsSlice";
-import cn from "classnames";
-import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
-import DropdownToggle from "react-bootstrap/esm/DropdownToggle";
-import { openModal } from "../slices/modalSlice";
-import { useTranslation } from "react-i18next";
+import { useSelector, useDispatch } from 'react-redux';
+import { setCurrentChannelId } from '../slices/channelsSlice';
+import cn from 'classnames';
+import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
+import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
+import { openModal } from '../slices/modalSlice';
+import { useTranslation } from 'react-i18next';
 
 const ChannelButton = (props) => {
   const { channel } = props;
@@ -23,7 +23,7 @@ const ChannelButton = (props) => {
             dispatch(setCurrentChannelId({ currentChannelId: channel.id }))
           }
           variant={cn({
-            "outline-secondary": channel.id === channelsInfo.currentChannelId,
+            'outline-secondary': channel.id === channelsInfo.currentChannelId,
           })}
           className="w-100 rounded-0 text-start"
         >
@@ -45,7 +45,7 @@ const ChannelButton = (props) => {
             dispatch(setCurrentChannelId({ currentChannelId: channel.id }))
           }
           variant={cn({
-            "outline-secondary": channel.id === channelsInfo.currentChannelId,
+            'outline-secondary': channel.id === channelsInfo.currentChannelId,
           })}
           className="w-100 rounded-0 text-start text-truncate"
         >
@@ -56,26 +56,26 @@ const ChannelButton = (props) => {
         <DropdownToggle
           split
           variant={cn({
-            "outline-secondary": channel.id === channelsInfo.currentChannelId,
+            'outline-secondary': channel.id === channelsInfo.currentChannelId,
           })}
         >
-          <span className="visually-hidden">{t("dropdown.label")}</span>
+          <span className="visually-hidden">{t('dropdown.label')}</span>
         </DropdownToggle>
 
         <Dropdown.Menu>
           <Dropdown.Item
             onClick={() =>
-              dispatch(openModal({ type: "removing", id: channel.id }))
+              dispatch(openModal({ type: 'removing', id: channel.id }))
             }
           >
-            {t("dropdown.delete")}
+            {t('dropdown.delete')}
           </Dropdown.Item>
           <Dropdown.Item
             onClick={() =>
-              dispatch(openModal({ type: "renaming", id: channel.id }))
+              dispatch(openModal({ type: 'renaming', id: channel.id }))
             }
           >
-            {t("dropdown.rename")}
+            {t('dropdown.rename')}
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>

@@ -1,4 +1,4 @@
-import { useFormik } from "formik";
+import { useFormik } from 'formik';
 import {
   Modal,
   FormGroup,
@@ -6,12 +6,12 @@ import {
   Form,
   Button,
   Stack,
-} from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { closeModal } from "../slices/modalSlice";
-import { socket } from "../socket";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+} from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '../slices/modalSlice';
+import { socket } from '../socket';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const Rename = (props) => {
   const { id } = props;
@@ -25,7 +25,7 @@ const Rename = (props) => {
     if (
       !channelsInfo.channels.every((channel) => channel.name !== values.name)
     ) {
-      errors.name = t("modal.mustBeUnique");
+      errors.name = t('modal.mustBeUnique');
     }
     return errors;
   };
@@ -38,7 +38,7 @@ const Rename = (props) => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      socket.emit("renameChannel", {
+      socket.emit('renameChannel', {
         id: id,
         name: values.name,
       });
@@ -49,7 +49,7 @@ const Rename = (props) => {
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title>{t("modal.renameChannel")}</Modal.Title>
+        <Modal.Title>{t('modal.renameChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -66,7 +66,7 @@ const Rename = (props) => {
               isInvalid={formik.errors.name}
             />
             <Form.Label className="visually-hidden" htmlFor="name">
-              {t("modal.name")}
+              {t('modal.name')}
             </Form.Label>
             <Form.Control.Feedback type="invalid">
               {formik.errors.name}
@@ -78,10 +78,10 @@ const Rename = (props) => {
               variant="secondary ms-auto"
               onClick={hideModal}
             >
-              {t("modal.cancel")}
+              {t('modal.cancel')}
             </Button>
             <Button type="submit" variant="primary">
-              {t("modal.send")}
+              {t('modal.send')}
             </Button>
           </Stack>
         </Form>
