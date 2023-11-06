@@ -29,8 +29,7 @@ const channelsSlice = createSlice({
       );
     },
     renameChannel: (state, { payload }) => {
-      state.channels.find((channel) => channel.id === payload.id).name =
-        payload.name;
+      state.channels.find((channel) => channel.id === payload.id).name = payload.name;
     },
   },
 });

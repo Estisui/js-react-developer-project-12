@@ -1,13 +1,13 @@
-import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { Button, Form } from 'react-bootstrap';
 import * as Yup from 'yup';
-import UserContext from '../slices/UserContext';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
+import UserContext from '../slices/UserContext';
+import Header from './Header';
 
 const SignUpForm = () => {
   const { t } = useTranslation();
@@ -117,24 +117,22 @@ const SignUpForm = () => {
   );
 };
 
-const SignUp = () => {
-  return (
-    <div className="login d-flex flex-column h-100 text-light">
-      <Header />
-      <div className="container-fluid h-100">
-        <div className="row justify-content-center align-content-center h-100">
-          <div className="col-12 col-md-8 col-xxl-6">
-            <div className="card border-light shadow-sm">
-              <div className="card-body row p-5">
-                <SignUpForm />
-              </div>
+const SignUp = () => (
+  <div className="login d-flex flex-column h-100 text-light">
+    <Header />
+    <div className="container-fluid h-100">
+      <div className="row justify-content-center align-content-center h-100">
+        <div className="col-12 col-md-8 col-xxl-6">
+          <div className="card border-light shadow-sm">
+            <div className="card-body row p-5">
+              <SignUpForm />
             </div>
           </div>
         </div>
       </div>
-      <ToastContainer />
     </div>
-  );
-};
+    <ToastContainer />
+  </div>
+);
 
 export default SignUp;

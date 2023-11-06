@@ -15,8 +15,6 @@ parserOptions:
     jsx: true
   ecmaVersion: latest
   sourceType: module
-  babelOptions: 
-    configFile: frontend/.eslintrc.yml
 
 plugins:
   - react

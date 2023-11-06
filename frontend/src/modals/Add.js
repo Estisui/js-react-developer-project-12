@@ -7,11 +7,10 @@ import {
   Button,
   Stack,
 } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { closeModal } from '../slices/modalSlice';
 import { socket } from '../socket';
-import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 
 const Add = () => {
   const { t } = useTranslation();

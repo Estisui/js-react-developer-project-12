@@ -7,7 +7,7 @@ import Page404 from './components/Page404';
 import UserContext from './slices/UserContext';
 import SignUp from './components/SignUp';
 
-function App() {
+const App = () => {
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem('user')) || null,
   );
@@ -24,6 +24,6 @@ function App() {
       </Router>
     </UserContext.Provider>
   );
-}
+};
 
 export default App;

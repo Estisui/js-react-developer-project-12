@@ -1,8 +1,8 @@
 import { Modal, Button, Stack } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { closeModal } from '../slices/modalSlice';
 import { socket } from '../socket';
-import { useTranslation } from 'react-i18next';
 
 const Remove = (props) => {
   const { id } = props;
@@ -11,7 +11,7 @@ const Remove = (props) => {
   const hideModal = () => dispatch(closeModal());
   const removeChannel = () => {
     socket.emit('removeChannel', {
-      id: id,
+      id,
     });
     hideModal();
   };

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import UserContext from '../slices/UserContext';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import UserContext from '../slices/UserContext';
 
 const LogOutButton = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);

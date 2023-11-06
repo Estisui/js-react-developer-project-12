@@ -1,8 +1,13 @@
 import { useEffect, useContext, useState } from 'react';
-import UserContext from '../slices/UserContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
+import { Button, Form } from 'react-bootstrap';
+import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
+import { ToastContainer, toast } from 'react-toastify';
+import filter from 'leo-profanity';
+import UserContext from '../slices/UserContext';
 import {
   addChannel,
   setChannels,
@@ -11,15 +16,10 @@ import {
 } from '../slices/channelsSlice';
 import { addMessage, setMessages } from '../slices/messagesSlice';
 import { socket } from '../socket';
-import { Button, Form } from 'react-bootstrap';
-import { useFormik } from 'formik';
 import getModal from '../modals';
 import { openModal } from '../slices/modalSlice';
 import ChannelButton from './ChannelButton';
 import Header from './Header';
-import { useTranslation } from 'react-i18next';
-import { ToastContainer, toast } from 'react-toastify';
-import filter from 'leo-profanity';
 
 const ChatPage = () => {
   const { currentUser } = useContext(UserContext);
@@ -137,9 +137,9 @@ const ChatPage = () => {
               fill="currentColor"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
-              ></path>
+              />
             </svg>
             <span className="visually-hidden">{t('send')}</span>
           </Button>
@@ -167,7 +167,7 @@ const ChatPage = () => {
               <b>{t('channels')}</b>
               <button
                 type="button"
-                class="p-0 text-primary btn btn-group-vertical"
+                className="p-0 text-primary btn btn-group-vertical"
                 onClick={() => dispatch(openModal({ type: 'adding' }))}
               >
                 <svg
@@ -177,8 +177,8 @@ const ChatPage = () => {
                   height="20"
                   fill="currentColor"
                 >
-                  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path>
-                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                 </svg>
                 <span className="visually-hidden">+</span>
               </button>
@@ -197,26 +197,25 @@ const ChatPage = () => {
               <div className="mb-4 p-3 small border-bottom">
                 <p className="m-0">
                   <b>
-                    #{' '}
+                    #
+                    {' '}
                     {channelsInfo.currentChannelId
                       ? channelsInfo.channels.find(
-                          (channel) =>
-                            channel.id === channelsInfo.currentChannelId,
-                        ).name
+                        (channel) => channel.id === channelsInfo.currentChannelId,
+                      ).name
                       : ''}
                   </b>
                 </p>
                 <span className="text-muted">
                   {
                     messagesInfo.messages.filter(
-                      (message) =>
-                        message.channelId === channelsInfo.currentChannelId,
+                      (message) => message.channelId === channelsInfo.currentChannelId,
                     ).length
-                  }{' '}
+                  }
+                  {' '}
                   {t('messages.message', {
                     count: messagesInfo.messages.filter(
-                      (message) =>
-                        message.channelId === channelsInfo.currentChannelId,
+                      (message) => message.channelId === channelsInfo.currentChannelId,
                     ).length,
                   })}
                 </span>
@@ -227,12 +226,13 @@ const ChatPage = () => {
               >
                 {messagesInfo.messages
                   .filter(
-                    (message) =>
-                      message.channelId === channelsInfo.currentChannelId,
+                    (message) => message.channelId === channelsInfo.currentChannelId,
                   )
                   .map((message) => (
                     <div key={message.id} className="text-break mb-2">
-                      <b>{message.username}</b>: {filter.clean(message.body)}
+                      <b>{message.username}</b>
+                      :
+                      {filter.clean(message.body)}
                     </div>
                   ))}
               </div>

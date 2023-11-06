@@ -1,10 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentChannelId } from '../slices/channelsSlice';
 import cn from 'classnames';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
-import { openModal } from '../slices/modalSlice';
 import { useTranslation } from 'react-i18next';
+import { openModal } from '../slices/modalSlice';
+import { setCurrentChannelId } from '../slices/channelsSlice';
 
 const ChannelButton = (props) => {
   const { channel } = props;
@@ -19,9 +19,7 @@ const ChannelButton = (props) => {
       <li key={channel.id} className="nav-item w-100">
         <Button
           type="button"
-          onClick={() =>
-            dispatch(setCurrentChannelId({ currentChannelId: channel.id }))
-          }
+          onClick={() => dispatch(setCurrentChannelId({ currentChannelId: channel.id }))}
           variant={cn({
             'outline-secondary': channel.id === channelsInfo.currentChannelId,
           })}
@@ -41,9 +39,7 @@ const ChannelButton = (props) => {
       <Dropdown as={ButtonGroup} className="w-100">
         <Button
           type="button"
-          onClick={() =>
-            dispatch(setCurrentChannelId({ currentChannelId: channel.id }))
-          }
+          onClick={() => dispatch(setCurrentChannelId({ currentChannelId: channel.id }))}
           variant={cn({
             'outline-secondary': channel.id === channelsInfo.currentChannelId,
           })}
@@ -64,16 +60,12 @@ const ChannelButton = (props) => {
 
         <Dropdown.Menu>
           <Dropdown.Item
-            onClick={() =>
-              dispatch(openModal({ type: 'removing', id: channel.id }))
-            }
+            onClick={() => dispatch(openModal({ type: 'removing', id: channel.id }))}
           >
             {t('dropdown.delete')}
           </Dropdown.Item>
           <Dropdown.Item
-            onClick={() =>
-              dispatch(openModal({ type: 'renaming', id: channel.id }))
-            }
+            onClick={() => dispatch(openModal({ type: 'renaming', id: channel.id }))}
           >
             {t('dropdown.rename')}
           </Dropdown.Item>

@@ -3,10 +3,10 @@ import { useFormik } from 'formik';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
-import Header from './Header';
-import UserContext from '../slices/UserContext';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer, toast } from 'react-toastify';
+import Header from './Header';
+import UserContext from '../slices/UserContext';
 
 const LoginForm = () => {
   const { setCurrentUser } = useContext(UserContext);
