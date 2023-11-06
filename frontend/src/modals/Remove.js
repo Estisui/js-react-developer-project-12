@@ -2,7 +2,7 @@ import { Modal, Button, Stack } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { closeModal } from '../slices/modalSlice';
-import { socket } from '../socket';
+import socket from '../socket';
 
 const Remove = (props) => {
   const { id } = props;

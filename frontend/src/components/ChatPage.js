@@ -15,7 +15,7 @@ import {
   renameChannel,
 } from '../slices/channelsSlice';
 import { addMessage, setMessages } from '../slices/messagesSlice';
-import { socket } from '../socket';
+import socket from '../socket';
 import getModal from '../modals';
 import { openModal } from '../slices/modalSlice';
 import ChannelButton from './ChannelButton';

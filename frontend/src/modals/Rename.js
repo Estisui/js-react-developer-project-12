@@ -10,7 +10,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { closeModal } from '../slices/modalSlice';
-import { socket } from '../socket';
+import socket from '../socket';
 
 const Rename = (props) => {
   const { id } = props;
