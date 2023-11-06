@@ -106,7 +106,7 @@ const SignUpForm = () => {
         <Form.Control.Feedback type="invalid">
           {formik.errors.confirmPassword}
         </Form.Control.Feedback>
-        <Form.Label htmlFor="password">
+        <Form.Label htmlFor="confirmPassword">
           {t("signUp.confirmPassword")}
         </Form.Label>
       </Form.Group>
